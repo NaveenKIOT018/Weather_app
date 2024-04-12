@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Application</title>
+    <link rel="stylesheet" href="./wa.css">
+</head>
+<body class="bg">
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter City name" spellcheck="false">
+            <button><img src="./images/search.png" alt=""></button>
+        </div>
+        <div class="weather">
+            <img src="" class="wicon" alt="">
+            <h1 class="temp">Degree</h1>
+            <h2 class="city">Location</h2>
+            <p class="place"></p>
+            <div class="details">
+                <div class="col">
+                    <img src="./images/humidity.png" alt="">
+                    <div>
+                        <p class="humidity"><!--50%--></p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="./images/wind.png" alt="">
+                    <div>
+                        <p class="wind"><!--50 Km/hr--></p>
+                        <p>Wind</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apikey="3485b9f05b29b3671399a09f02f15c8b"
+        const apiurl="https://api.openweathermap.org/data/2.5/weather?units=metric&q="
+
+        const searchbox = document.querySelector(".search input")
+        const searchbtn = document.querySelector(".search button")
+        const wicon = document.querySelector(".wicon")
+        const bg = document.querySelector(".bg")
+
+        searchbtn.addEventListener('click',()=>{
+
+            const city = searchbox.value;
+            
+            if (city === "") {
+                alert("Please Enter the City Name");
+            } else {
+                fetch(apiurl + city + `&appid=${apikey}`)
+                    .then(res => res.json())
+                    .then(data => chwh(data))
+                    .catch(error => console.error("Error fetching weather data:", error));
+            }
+        })
+
+        searchbox.addEventListener('keypress',(e)=>{
+
+           
+            if (e.key === 'Enter') {
+                const city = searchbox.value;
+                if (city === "") {
+                    alert("Please Enter the City Name");
+                } else {
+                    fetch(apiurl + city + `&appid=${apikey}`)
+                        .then(res => res.json())
+                        .then(data => chwh(data))
+                        .catch(error => console.error("Error fetching weather data:", error));
+                }
+            }
+        })
+
+       function chwh(data){
+
+            searchbox.value=""
+
+            document.querySelector(".city").innerHTML = data.name
+            document.querySelector(".place").innerHTML = data.sys.country
+            document.querySelector(".temp").innerHTML = Math.round(data.main.temp)
+            document.querySelector(".humidity").innerHTML = data.main.humidity+"%"
+            document.querySelector(".wind").innerHTML = data.wind.speed+"Km/hr"
+
+            if(data.weather[0].main == "clouds"){
+                wicon.src="./images/clouds.png"
+                bg.classList.add("bg_cloud")
+            }
+            else if (data.weather[0].main == "Clear"){
+                wicon.src="./images/clear.png"
+                bg.classList.add(".bg_clear")
+            }
+            else if (data.weather[0].main == "Rain"){
+                wicon.src="./images/rain.png"
+                bg.classList.add("bg_rainy")
+            }
+            else if (data.weather[0].main == "Drizzle"){
+                wicon.src="./images/drizzle.png"
+            }
+            else {
+                wicon.src="./images/mist.png"
+            }
+        }
+</script>
+</body>
+</html>
+
