@@ -85,23 +85,25 @@
             document.querySelector(".humidity").innerHTML = data.main.humidity+"%"
             document.querySelector(".wind").innerHTML = data.wind.speed+"Km/hr"
 
-            if(data.weather[0].main == "clouds"){
+            if(data.weather[0].main == "Clouds"){
                 wicon.src="./images/clouds.png"
-                bg.classList.add("bg_cloud")
+                document.body.classList.add("bg_cloud")
             }
             else if (data.weather[0].main == "Clear"){
                 wicon.src="./images/clear.png"
-                bg.classList.add(".bg_clear")
+                document.body.classList.add("bg_clear")
             }
             else if (data.weather[0].main == "Rain"){
                 wicon.src="./images/rain.png"
-                bg.classList.add("bg_rainy")
+                document.body.classList.add("bg_rainy")
             }
             else if (data.weather[0].main == "Drizzle"){
                 wicon.src="./images/drizzle.png"
+                document.body.classList.add("bg_rainy")
             }
             else {
-                wicon.src="./images/mist.png"
+                wicon.src="./images/mist.png"   
+                document.body.classList.add("bg_rainy")
             }
         }
 </script>
